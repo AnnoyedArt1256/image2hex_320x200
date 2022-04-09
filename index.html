@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+Original Image: <br>
+<img id="img"></img>
+
+<br>
+
+Stretched Image at 320x200 <br>
+<canvas id="canvas" width="320" height="200" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas><br><br>
+
+<input type="file" id="files"></input>
+<br> <br>
+
+Output: <br>
+<textarea id="output"></textarea>
+<script>
+      var files = document.getElementById("files"),
+      cart = document.getElementById("img");
+
+      files.onchange = function(){
+        var file = files.files[0],
+        reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.addEventListener("load", function(){
+          img.src = reader.result;
+        });
+      };
+
+      img.addEventListener("load", function(){
+        var canvas = document.getElementById("canvas"),
+        ctx = canvas.getContext("2d");
+        ctx.drawImage(cart,0,0,320,200);
+        var imgData = ctx.getImageData(0, 0,320,200).data
+        out=""
+        for (i=0;i<imgData.length;i++) {
+           if (i%4!=3) out += imgData[i].toString(16).padStart(2,0) + " "
+        }
+        document.getElementById("output").value = out
+      });
+</script>
+
+</body>
+</html>
